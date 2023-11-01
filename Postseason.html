@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Postseason</title>
+  </head>
+  <body>
+    <article id="Qualified"></article>
+    <div id="numBowls"></div>
+    <div id="BowlScore"></div>
+    <button id="EnterPostseason">Enter Postseason</button>
+    <button id="NextSeason">Next Season</button>
+    <script>
+      let wins = localStorage.getItem("NumWins");
+      if (wins >= 6) {
+        document.getElementById("Qualified").innerHTML =
+          "Welcome to the Postseason!" + "Your team has: " + wins + " wins.";
+        if (wins >= 10) {
+          document.getElementById("numBowls").innerHTML =
+          "You are part of the College Football Playoff. You will play up to 2 bowls.";
+        }
+        let randNum = Math.floor(Math.random() * teams.length);
+        let splicedItem = teams.splice(randNum, 1)[0];
+        document.getElementById("EnterPostseason").onclick=playFootball(localStorage.getItem("UserTeam"), splicedItem);
+      }else{
+        document.getElementById("Qualified").innerHTML =
+          "You Didn't qualify for the postseason." + "Your team has: " + wins + " wins.";
+        document.getElementById("EnterPostseason").hidden=true;
+        document.getElementById("NextSeason").onclick = window.location.href="Season_Sim.html";
+      }
+      //collect all possible opponents
+      teams = [
+          "Air Force Falcons",
+          "Akron Zips",
+          "Alabama Crimson Tide",
+          "Appalachian State Mountaineers",
+          "Arizona Wildcats",
+          "Arizona State Sun Devils",
+          "Arkansas Razorbacks",
+          "Arkansas State Red Wolves",
+          "Army Black Knights",
+          "Auburn Tigers",
+          "Ball State Cardinals",
+          "Baylor Bears",
+          "Boise State Broncos",
+          "Boston College Eagles",
+          "Bowling Green Falcons",
+          "Buffalo Bulls",
+          "BYU Cougars",
+          "California Golden Bears",
+          "Central Michigan Chippewas",
+          "Charlotte 49ers",
+          "Cincinnati Bearcats",
+          "Clemson Tigers",
+          "Coastal Carolina Chanticleers",
+          "Colorado Buffaloes",
+          "Colorado State Rams",
+          "Duke Blue Devils",
+          "East Carolina Pirates",
+          "Eastern Michigan Eagles",
+          "FIU Panthers",
+          "Florida Gators",
+          "Florida Atlantic Owls",
+          "Florida State Seminoles",
+          "Fresno State Bulldogs",
+          "Georgia Bulldogs",
+          "Georgia Southern Eagles",
+          "Georgia State Panthers",
+          "Georgia Tech Yellow Jackets",
+          "Hawaii Rainbow Warriors",
+          "Houston Cougars",
+          "Illinois Fighting Illini",
+          "Indiana Hoosiers",
+          "Iowa Hawkeyes",
+          "Iowa State Cyclones",
+          "Jacksonville State Gamecocks",
+          "James Madison Dukes",
+          "Kansas Jayhawks",
+          "Kansas State Wildcats",
+          "Kent State Golden Flashes",
+          "Kentucky Wildcats",
+          "Liberty Flames",
+          "Louisiana Ragin’ Cajuns",
+          "Louisiana-Monroe Warhawks",
+          "Louisiana Tech Bulldogs",
+          "Louisville Cardinals",
+          "Louisiana State Tigers",
+          "Marshall Thundering Herd",
+          "Maryland Terrapins",
+          "Memphis Tigers",
+          "Miami (FL) Hurricanes",
+          "Miami (OH) RedHawks",
+          "Michigan Wolverines",
+          "Michigan State Spartans",
+          "Middle Tennessee Blue Raiders",
+          "Minnesota Golden Gophers",
+          "Mississippi State Bulldogs",
+          "Missouri Tigers",
+          "Navy Midshipmen",
+          "NC State Wolfpack",
+          "Nebraska Cornhuskers",
+          "Nevada Wolf Pack",
+          "New Mexico Lobos",
+          "New Mexico State Aggies",
+          "North Carolina Tar Heels",
+          "North Texas Mean Green",
+          "Northern Illinois Huskies",
+          "Northwestern Wildcats",
+          "Notre Dame Fighting Irish",
+          "Ohio Bobcats",
+          "Ohio State Buckeyes",
+          "Oklahoma Sooners",
+          "Oklahoma State Cowboys",
+          "Old Dominion Monarchs",
+          "Ole Miss Rebels",
+          "Oregon Ducks",
+          "Oregon State Beavers",
+          "Penn State Nittany Lions",
+          "Pittsburgh Panthers",
+          "Purdue Boilermakers",
+          "Rice Owls",
+          "Rutgers Scarlet Knights",
+          "Sam Houston State Bearkats",
+          "San Diego State Aztecs",
+          "San Jose State Spartans",
+          "SMU Mustangs",
+          "South Alabama Jaguars",
+          "South Carolina Gamecocks",
+          "South Florida Bulls",
+          "Southern Miss Golden Eagles",
+          "Stanford Cardinal",
+          "Syracuse Orange",
+          "TCU Horned Frogs",
+          "Temple Owls",
+          "Tennessee Volunteers",
+          "Texas Longhorns",
+          "Texas A&M Aggies",
+          "Texas State Bobcats",
+          "Texas Tech Red Raiders",
+          "Toledo Rockets",
+          "Troy Trojans",
+          "Tulane Green Wave",
+          "Tulsa Golden Hurricane",
+          "UAB Blazers",
+          "UCF Knights",
+          "UCLA Bruins",
+          "UConn Huskies",
+          "UMass Minutemen",
+          "UNLV Rebels",
+          "USC Trojans",
+          "UTEP Miners",
+          "UTSA Roadrunners",
+          "Utah Utes",
+          "Utah State Aggies",
+          "Vanderbilt Commodores",
+          "Virginia Cavaliers",
+          "Virginia Tech Hokies",
+          "Wake Forest Demon Deacons",
+          "Washington Huskies",
+          "Washington State Cougars",
+          "West Virginia Mountaineers",
+          "Western Kentucky Hilltoppers",
+          "Western Michigan Broncos",
+          "Wisconsin Badgers",
+          "Wyoming Cowboys",
+        ];
+        teams.splice(teams.indexOf(team), 1); //can't play yourself
+      //simulate bowls
+      function playFootball(HomeTeam, AwayTeam) {
+        let homeTeamScore = 0;
+        let awayTeamScore = 0;
+        let Gameweek = [];
+        // Simulate game quarters
+        for (let quarter = 1; quarter <= 4; quarter++) {
+          // Simulate plays within each quarter
+          for (let play = 1; play <= 15; play++) {
+            // Simulate random events such as touchdowns, interceptions, fumbles, etc.
+            const event = Math.random(); // Generate a random number between 0 and 1
+
+            if (event < 0.05) {
+              // 5% chance of a touchdown
+              const teamWithTouchdown = Math.random() < 0.5 ? "home" : "away"; // Randomly determine the team with the touchdown
+              if (teamWithTouchdown === "home") {
+                homeTeamScore += 7; // Add 6 points for a touchdown
+              } else {
+                awayTeamScore += 7; // Add 6 points for a touchdown
+              }
+            } else if (event == 0.1) {
+              // <1% chance of an safety
+              const teamWithSafety = Math.random() < 0.5 ? "home" : "away"; // Randomly determine the team with the safety
+              if (teamWithSafety === "home") {
+                awayTeamScore += 2; // Add 2 points for a defensive score (safety)
+              } else {
+                homeTeamScore += 2; // Add 2 points for a defensive score (safety)
+              }
+            } else if (event < 0.2) {
+              // 10% chance of a field goal
+              const teamWithFieldGoal = Math.random() < 0.5 ? "home" : "away"; // Randomly determine the team with the field goal
+              if (teamWithFieldGoal === "home") {
+                homeTeamScore += 3; // Add 3 points for a field goal
+              } else {
+                awayTeamScore += 3; // Add 3 points for a field goal
+              }
+            } else {
+              // 80% chance of no score
+              continue; // Skip this play without adding any points
+            }
+          }
+          // Check if the game is tied at the end of the fourth quarter
+          if (quarter === 4 && homeTeamScore === awayTeamScore) {
+            // Overtime
+            continue; // Continue the game to resolve the tie
+          }
+        }
+        // Return the scores of the game
+        if (homeTeamScore > awayTeamScore) {
+          Gameweek.push(homeTeamScore + "-" + awayTeamScore, "Home Win");
+        } else{
+          Gameweek.push(homeTeamScore + "-" + awayTeamScore, "Away Win");
+        }
+        document.getElementById("BowlScore").innerHTML = Gameweek;
+      }
+    </script>
+  </body>
+</html>
